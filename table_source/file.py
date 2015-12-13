@@ -2,10 +2,16 @@ import csv
 import re
 from table_source.datasource import DataSource
 
+DO_ASSERT_HEADERS = False
 PERCENT_TRIM = re.compile("^(\\d+)(\\.\\d*)?%?$")
 
 def percent(s):
     return int(PERCENT_TRIM.fullmatch(s).group(1))
+
+def assert_headers(expected, actual):
+    if (not DO_ASSERT_HEADERS) or (actual == expected):
+        return
+    raise AssertionError("expected %s but got %s" % (expected, actual))
 
 class File(DataSource):
     def __init__(self, filename):
@@ -29,7 +35,7 @@ class File(DataSource):
 
     def load_main_tables(self):
         TABLE_START = 1
-        assert(self.raw[TABLE_START][0:5] == ["1d20", "Danger", "Wealth", "Features", "Connections"])
+        assert_headers(["1d20", "Danger", "Wealth", "Features", "Connections"], self.raw[TABLE_START][0:5])
         for i in range(20):
             j = i + TABLE_START + 1
             self.danger[i] = self.raw[j][1]
@@ -42,7 +48,7 @@ class File(DataSource):
         TUNABLE_SIZE = 8
         rows = [self.raw[j] for j in range(TUNABLE_START, TUNABLE_START+TUNABLE_SIZE)]
         heads = [row[0] for row in rows]
-        assert(heads == ["Room width", "Room length", "Room exits", "Number of danger rolls", "Number of wealth rolls", "Chance of feature", "Chance of feature if otherwise empty", "Chance of crosslink"])
+        assert_headers(["Room width", "Room length", "Room exits", "Number of danger rolls", "Number of wealth rolls", "Chance of feature", "Chance of feature if otherwise empty", "Chance of crosslink"], heads)
         values = [row[1] for row in rows]
         self.room_width = values[0]
         self.room_height = values[1]
@@ -55,7 +61,7 @@ class File(DataSource):
 
     def load_creatures(self):
         CREATURE_START = 32
-        assert(self.raw[CREATURE_START][0] == "Creature")
+        assert_headers(["Creature"], self.raw[CREATURE_START][0:1])
         self.creature_headers = [h for h in self.raw[CREATURE_START][1:] if h != ""]
         value_max = 1 + len(self.creature_headers)
         for j in range(CREATURE_START+1, len(self.raw)):
