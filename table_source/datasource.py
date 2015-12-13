@@ -2,24 +2,25 @@ import random_source
 import re
 
 TEMPLATE_RANDOM = re.compile("\\[%s\\]" % random_source.DPATTERN_TEXT)
+TEMPLATE_NAME = re.compile("\\[([^#].+)\\]")
 
 def identity(x): return x
 
-def snip(string, start, end):
-    return lambda: string[start:end]
+def snip(string, start, end=None):
+    return string[start:end]
 
-def compile_template(template, randoms, post_transform=identity):
+def extract_fragments(template, pattern, transform_text, transform_item):
     last = 0
     fragments = []
-    for match in TEMPLATE_RANDOM.finditer(template):
+    for match in pattern.finditer(template):
         copylast = last
         start = match.start()
         end = match.end()
-        fragments.append(snip(template, copylast, start))
-        fragments.append(lambda: randoms.dagainstmatch(match))
+        fragments.append(transform_text(snip(template, copylast, start)))
+        fragments.append(transform_item(match))
         last = end
-    fragments.append(snip(template, last, None))
-    return lambda: post_transform(render_template(fragments))
+    fragments.append(transform_text(snip(template, last)))
+    return fragments
 
 def render_template(fragments):
     rfragments = [str(f()) for f in fragments]
@@ -43,19 +44,54 @@ class DataSource:
         self.module_name = "UNKNOWN"
 
     def compile_templates(self, randoms):
-        self.room_width = compile_template(self.room_width, randoms, post_transform=int)
-        self.room_height = compile_template(self.room_height, randoms, post_transform=int)
-        self.room_exits = compile_template(self.room_exits, randoms, post_transform=int)
-        self.danger_rolls = compile_template(self.danger_rolls, randoms, post_transform=int)
-        self.wealth_rolls = compile_template(self.wealth_rolls, randoms, post_transform=int)
+        self.room_width = self.compile_int_template(self.room_width, randoms)
+        self.room_height = self.compile_int_template(self.room_height, randoms)
+        self.room_exits = self.compile_int_template(self.room_exits, randoms)
+        self.danger_rolls = self.compile_int_template(self.danger_rolls, randoms)
+        self.wealth_rolls = self.compile_int_template(self.wealth_rolls, randoms)
         self.compile_list(self.danger, randoms)
         self.compile_list(self.wealth, randoms)
         self.compile_list(self.features, randoms)
-        self.compile_list(self.connections, randoms)
+        self.compile_list(self.connections, randoms, include_stats=False)
 
-    def compile_list(self, items, randoms):
+    def compile_list(self, items, randoms, include_stats=True):
         for i in range(len(items)):
-            items[i] = compile_template(items[i], randoms)
+            items[i] = self.compile_template(items[i], randoms, include_stats)
+
+    def compile_names(self, fragment, accumulator):
+        transform_text = lambda text: lambda: text
+        def transform_item(match):
+            critter_name = match.group(1)
+            if critter_name != "":
+                accumulator.add(critter_name)
+            return lambda: critter_name
+        subfragments = extract_fragments(fragment, TEMPLATE_NAME, transform_text, transform_item)
+        return lambda: render_template(subfragments)
+
+    def compile_int_template(self, template, randoms):
+        transform_text = lambda text: lambda: text
+        transform_item = lambda match: lambda: randoms.dagainstmatch(match)
+        fragments = extract_fragments(template, TEMPLATE_RANDOM, transform_text, transform_item)
+        return lambda: int(render_template(fragments))
+
+    def compile_template(self, template, randoms, include_stats=True):
+        accumulator = set()
+        transform_text = lambda text: self.compile_names(text, accumulator)
+        transform_item = lambda match: lambda: randoms.dagainstmatch(match)
+        fragments = extract_fragments(template, TEMPLATE_RANDOM, transform_text, transform_item)
+        stats = self.critter_stat_blocks(sorted(accumulator))
+        if include_stats:
+            return lambda: (render_template(fragments), stats)
+        else:
+            return lambda: render_template(fragments)
+
+    def critter_stat_blocks(self, critter_names):
+        return [self.critter_stat_block(name) for name in critter_names]
+
+    def critter_stat_block(self, name):
+        self.creature_headers
+        statline = ", ".join(map(lambda pair: "%s: %s" % pair, zip(self.creature_headers, self.creatures[name])))
+        return "%s: %s" % (name, statline)
 
     def get_danger(self, randoms):
         return self.danger[randoms.index()]()

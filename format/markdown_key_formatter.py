@@ -15,6 +15,7 @@ class MarkdownKeyFormatter(Formatter):
         self.write_list("Dangers", room.danger, writer)
         self.write_list("Loot", room.wealth, writer)
         self.write_list("Exits", conns, writer)
+        self.write_list("Stat Blocks", room.stats, writer)
 
     def write_list(self, header, items, writer):
         if len(items) == 0:

@@ -32,7 +32,7 @@ Chance of feature if otherwise empty,100.00%,,,,,
 Creature,AC,HD,Dmg,Move,Morale,Notes
 badgerclaw person,1,1,1d8,90' (30'),8,"Burrow 5' a round, 20' a turn"
 dilla person,2,1,1d6,60' (20'),8,"Burrow 5' a round, 20' a turn"
-mole person,1,01/01/15,1d6,60' (20'),7,"Burrow 5' a round, 20' a turn"
+mole person,1,"1-1",1d6,60' (20'),7,"Burrow 5' a round, 20' a turn"
 doorsilk spider,1,3*,"2-12, poison",60' (20'),8,Save or die
 giant hornet,1,1*,1d8,90' (30'),8,Can fly
 rattlesnake,1,1*,"1-3, poison",90' (30'),7,Save or die
