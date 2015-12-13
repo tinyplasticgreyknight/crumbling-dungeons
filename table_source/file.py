@@ -30,10 +30,10 @@ class File(DataSource):
             self.connections[i] = self.raw[j][4]
 
     def load_creatures(self):
-        assert(self.raw[31][0] == "Creature")
-        self.creature_headers = [h for h in self.raw[31][1:] if h != ""]
+        assert(self.raw[32][0] == "Creature")
+        self.creature_headers = [h for h in self.raw[32][1:] if h != ""]
         value_max = 1 + len(self.creature_headers)
-        for j in range(32, len(self.raw)):
+        for j in range(33, len(self.raw)):
             name = self.raw[j][0]
             if name == "":
                 continue

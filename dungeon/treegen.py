@@ -1,9 +1,9 @@
 from dungeon.generator import Generator
 
 class TreeGen(Generator):
-    def __init__(self, tables, randoms, room_factory, crosslink_chance):
+    def __init__(self, tables, randoms, room_factory):
         Generator.__init__(self, tables, randoms, room_factory)
-        self.crosslink_chance = crosslink_chance
+        self.crosslink_chance = tables.crosslink_chance
         self.limit = 1000
 
     def generate_layout(self, donjon):

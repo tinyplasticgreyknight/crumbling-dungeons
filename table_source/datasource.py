@@ -41,6 +41,7 @@ class DataSource:
         self.wealth_rolls = "[d6-3]"
         self.feature_chance = 50
         self.feature_chance_empty = 100
+        self.crosslink_chance = 10
         self.module_name = "UNKNOWN"
 
     def compile_templates(self, randoms):
