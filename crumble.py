@@ -16,7 +16,7 @@ def main(tablefile, seedstr):
 
     room_factory = dungeon.RoomFactory(tables, randoms)
     connection_factory = dungeon.ConnectionFactory(tables, randoms)
-    generator = dungeon.TreeGen(tables, randoms, room_factory)
+    generator = dungeon.TreeGen(tables, randoms, room_factory, 10)
 
     donjon = dungeon.Instance(connection_factory)
 

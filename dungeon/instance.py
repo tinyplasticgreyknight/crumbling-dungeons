@@ -15,9 +15,15 @@ class Instance:
         connection = self.connection_factory.create()
         key1 = (index_a, index_b)
         key2 = (index_b, index_a)
-        if (key1 in self.connections.keys()) or (key2 in self.connections.keys()):
+        if self.are_connected(index_a, index_b):
             raise KeyError("already connected")
         self.connections[key1] = connection
+
+    def are_connected(self, index_a, index_b):
+        if index_a == index_b: return True
+        key1 = (index_a, index_b)
+        key2 = (index_b, index_a)
+        return (key1 in self.connections.keys()) or (key2 in self.connections.keys())
 
     def assign_room(self, index, room):
         if index < 0 or index >= self.num_rooms:

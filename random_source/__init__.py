@@ -11,11 +11,14 @@ class Seed:
     def randrange(self, start, stop=None, step=1):
         return self.stream.randrange(start, stop, step)
 
+    def chance(self, percent_chance):
+        return self.randint(0, 99) < percent_chance
+
     def d(self, n):
         return self.randint(1, n)
 
-    def index(self):
-        return self.d(20) - 1
+    def index(self, length=20):
+        return self.d(length) - 1
 
 class WrittenSeed(Seed):
     def __init__(self, nstr):
