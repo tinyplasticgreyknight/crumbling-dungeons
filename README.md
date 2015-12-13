@@ -1,15 +1,17 @@
+# Crumbling Dungeons
+
 A random dungeon generator, based almost entirely on a method by Andrew Shields:
 * https://fictivefantasies.files.wordpress.com/2013/05/murder-diggers-5-131.pdf
 * https://fictivefantasies.files.wordpress.com/2013/05/death-on-ice.pdf
 
 ## Invocation
-`crumble.py _<input-tables.csv>_ _<random-seed>_`
+`crumble.py <input-tables.csv> <random-seed>`
 
 Probably I'll modify it to pick a random seed if not supplied.
 
 ## Output
 Output currently includes:
-* A layout description file (`graph.dot`) suitable for use as input to graphviz using an invocation like `dot -Tpng graph.dot >graph.png`.
+* A layout description file (`graph.dot`) suitable for use as input to graphviz using an invocation like `dot -Tpng graph.dot > graph.png`.
 * A room key (`key.md`) with markdown formatting.  This could be converted to something prettier or just viewed directly in a text editor.
 
 ## Tables
@@ -18,13 +20,13 @@ There is an example of the input table file in the `examples` directory (tweaked
 Note that the "Room exits" roll is currently ignored; instead we start with d6 exits at the initial room, then each of those rooms has d6-1 exits, then d6-2, and so on.  Some rooms are also crosslinked back to each other.  This is a bit easier to automatically generate without having dungeons of unbounded size.
 
 ## Templates
-Square brackets are used to include templates in
+Square brackets are used to include templates in input table entries.  These templates are replaced when they show up in a specific room.
 
 ### Dice rolls
 Templates of the form `[d6]` or `[2d10]` or `[d12+7]` or `[3d6x100]` will be replaced with the result of the appropriate dice roll.
 
 ### Creatures present
-Templates which match the name of a row in the Creatures table will be replaced with just that creature's name, and the creature type will be marked as present in this room.
+Templates which match the name of a row in the Creatures table (e.g. "This room contains `[d6]` x `[bugbear]`, fast asleep.") will be replaced with just that creature's name, and the creature type will be marked as present in this room.
 
 The room's key will include a Stat Blocks section with the stats of every creature type marked as present.
 
