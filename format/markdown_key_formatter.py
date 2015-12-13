@@ -7,6 +7,8 @@ class MarkdownKeyFormatter(Formatter):
             conns = self.render_connections(donjon, i)
             if i == 0:
                 conns.insert(0, "To outside.")
+            if "trapexit" in room.tags:
+                conns.append("Via trap")
             self.write_room(room, conns, writer)
             writer.write("\n")
 
@@ -16,6 +18,7 @@ class MarkdownKeyFormatter(Formatter):
         self.write_list("Loot", room.wealth, writer)
         self.write_list("Features", room.features, writer)
         self.write_list("Exits", conns, writer)
+        self.write_list("Tags", room.tags, writer)
         self.write_list("Stat Blocks", room.stats, writer)
 
     def write_list(self, header, items, writer):

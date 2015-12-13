@@ -2,7 +2,7 @@ import random_source
 import re
 
 TEMPLATE_RANDOM = re.compile("\\[%s\\]" % random_source.DPATTERN_TEXT)
-TEMPLATE_NAME = re.compile("\\[([^#].+)\\]")
+TEMPLATE_NAME = re.compile("\\[(.+)\\]")
 
 def identity(x): return x
 
@@ -52,19 +52,24 @@ class DataSource:
         self.compile_list(self.danger, randoms)
         self.compile_list(self.wealth, randoms)
         self.compile_list(self.features, randoms)
-        self.compile_list(self.connections, randoms, include_stats=False)
+        self.compile_list(self.connections, randoms, include_extra=False)
 
-    def compile_list(self, items, randoms, include_stats=True):
+    def compile_list(self, items, randoms, include_extra=True):
         for i in range(len(items)):
-            items[i] = self.compile_template(items[i], randoms, include_stats)
+            items[i] = self.compile_template(items[i], randoms, include_extra)
 
-    def compile_names(self, fragment, accumulator):
+    def compile_names(self, fragment, acc_names, acc_tags):
         transform_text = lambda text: lambda: text
         def transform_item(match):
-            critter_name = match.group(1)
-            if critter_name != "":
-                accumulator.add(critter_name)
-            return lambda: critter_name
+            name = match.group(1)
+            if name == "":
+                return lambda: ""
+            elif name.startswith("#"):
+                acc_tags.append(name[1:])
+                return lambda: ""
+            else:
+                acc_names.append(name)
+                return lambda: name
         subfragments = extract_fragments(fragment, TEMPLATE_NAME, transform_text, transform_item)
         return lambda: render_template(subfragments)
 
@@ -74,14 +79,15 @@ class DataSource:
         fragments = extract_fragments(template, TEMPLATE_RANDOM, transform_text, transform_item)
         return lambda: int(render_template(fragments))
 
-    def compile_template(self, template, randoms, include_stats=True):
-        accumulator = set()
-        transform_text = lambda text: self.compile_names(text, accumulator)
+    def compile_template(self, template, randoms, include_extra=True):
+        acc_names = list()
+        acc_tags = list()
+        transform_text = lambda text: self.compile_names(text, acc_names, acc_tags)
         transform_item = lambda match: lambda: randoms.dagainstmatch(match)
         fragments = extract_fragments(template, TEMPLATE_RANDOM, transform_text, transform_item)
-        stats = self.critter_stat_blocks(sorted(accumulator))
-        if include_stats:
-            return lambda: (render_template(fragments), stats)
+        stats = self.critter_stat_blocks(sorted(set(acc_names)))
+        if include_extra:
+            return lambda: (render_template(fragments), stats, acc_tags)
         else:
             return lambda: render_template(fragments)
 
