@@ -3,13 +3,16 @@ import re
 
 TEMPLATE_RANDOM = re.compile("\\[%s\\]" % random_source.DPATTERN_TEXT)
 
-def compile_template(template, randoms, post_transform=id):
+def identity(x): return x
+
+def compile_template(template, randoms, post_transform=identity):
     last = 0
     fragments = []
     for match in TEMPLATE_RANDOM.finditer(template):
+        copylast = last
         start = match.start()
         end = match.end()
-        fragments.append(lambda: template[last:start])
+        fragments.append(lambda: template[copylast:start])
         fragments.append(lambda: randoms.dagainstmatch(match))
         last = end
     fragments.append(lambda: template[last:])
@@ -39,9 +42,20 @@ class DataSource:
     def compile_templates(self, randoms):
         self.room_width = compile_template(self.room_width, randoms, post_transform=int)
         self.room_height = compile_template(self.room_height, randoms, post_transform=int)
+        self.room_exits = compile_template(self.room_exits, randoms, post_transform=int)
+        self.danger_rolls = compile_template(self.danger_rolls, randoms, post_transform=int)
+        self.wealth_rolls = compile_template(self.wealth_rolls, randoms, post_transform=int)
+        self.compile_list(self.danger, randoms)
+        self.compile_list(self.wealth, randoms)
+        self.compile_list(self.features, randoms)
+        self.compile_list(self.connections, randoms)
+
+    def compile_list(self, items, randoms):
+        for i in range(len(items)):
+            items[i] = compile_template(items[i], randoms)
 
     def get_danger(self, randoms):
-        return self.danger[randoms.index()]
+        return self.danger[randoms.index()]()
 
     def get_wealth(self, randoms):
         return self.wealth[randoms.index()]
@@ -50,7 +64,7 @@ class DataSource:
         return self.features[randoms.index()]
 
     def get_connection(self, randoms):
-        return self.connections[randoms.index()]
+        return self.connections[randoms.index()]()
 
     def get_room_size(self):
         return (self.room_width(), self.room_height())

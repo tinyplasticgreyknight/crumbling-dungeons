@@ -1,7 +1,7 @@
 import random
 import re
 
-DPATTERN_TEXT = "(\\d+)?d(\\d+)([+-]\\d+)?(x(\\d+))"
+DPATTERN_TEXT = "(\\d+)?d(\\d+)([+-]\\d+)?(x(\\d+))?"
 DPATTERN = re.compile(DPATTERN_TEXT)
 
 def int_or(s, backup):
