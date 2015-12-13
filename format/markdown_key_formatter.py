@@ -11,11 +11,17 @@ class MarkdownKeyFormatter(Formatter):
             writer.write("\n")
 
     def write_room(self, room, conns, writer):
-        writer.write("## Room %s\n" % room.n)
-        if len(conns) > 0:
-            writer.write("### Exits\n")
-            for conntext in conns:
-                writer.write("* %s\n" % conntext)
+        writer.write("## Room %s (%dx%dft)\n" % (room.n, room.width, room.height))
+        self.write_list("Dangers", room.danger, writer)
+        self.write_list("Loot", room.wealth, writer)
+        self.write_list("Exits", conns, writer)
+
+    def write_list(self, header, items, writer):
+        if len(items) == 0:
+            return
+        writer.write("### %s\n" % header)
+        for item in items:
+            writer.write("* %s\n" % item)
 
     def render_connection(self, donjon, room_index, key):
         dest = 0

@@ -3,6 +3,12 @@ from dungeon.factory import Factory
 class Room:
     def __init__(self, n):
         self.n = n
+        self.feature = None
+        self.num_exits = 0
+        self.width = 0
+        self.height = 0
+        self.danger = []
+        self.wealth = []
 
 class RoomFactory(Factory):
     def __init__(self, tables, randoms):
