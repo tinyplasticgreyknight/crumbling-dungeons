@@ -17,4 +17,7 @@ class RoomFactory(Factory):
 
     def create(self):
         self.gensym += 1
-        return Room(self.gensym, self.tables.get_room_size())
+        room = Room(self.gensym, self.tables.get_room_size())
+        room.danger += [self.tables.get_danger(self.randoms) for _ in range(self.tables.danger_rolls())]
+        room.wealth += [self.tables.get_wealth(self.randoms) for _ in range(self.tables.wealth_rolls())]
+        return room

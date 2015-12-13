@@ -5,6 +5,9 @@ TEMPLATE_RANDOM = re.compile("\\[%s\\]" % random_source.DPATTERN_TEXT)
 
 def identity(x): return x
 
+def snip(string, start, end):
+    return lambda: string[start:end]
+
 def compile_template(template, randoms, post_transform=identity):
     last = 0
     fragments = []
@@ -12,10 +15,10 @@ def compile_template(template, randoms, post_transform=identity):
         copylast = last
         start = match.start()
         end = match.end()
-        fragments.append(lambda: template[copylast:start])
+        fragments.append(snip(template, copylast, start))
         fragments.append(lambda: randoms.dagainstmatch(match))
         last = end
-    fragments.append(lambda: template[last:])
+    fragments.append(snip(template, last, None))
     return lambda: post_transform(render_template(fragments))
 
 def render_template(fragments):
@@ -58,10 +61,10 @@ class DataSource:
         return self.danger[randoms.index()]()
 
     def get_wealth(self, randoms):
-        return self.wealth[randoms.index()]
+        return self.wealth[randoms.index()]()
 
     def get_feature(self, randoms):
-        return self.features[randoms.index()]
+        return self.features[randoms.index()]()
 
     def get_connection(self, randoms):
         return self.connections[randoms.index()]()
