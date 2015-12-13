@@ -10,6 +10,7 @@ import sys
 def main(tablefile, seedstr):
     tables = table_source.File(tablefile)
     randoms = random_source.WrittenSeed(seedstr)
+    tables.compile_templates(randoms)
 
     outdir = "%s-%08x" % (tables.module_name, randoms.seed)
     results = result_sink.Directory(outdir, format.GraphvizFormatter(), format.MarkdownKeyFormatter())

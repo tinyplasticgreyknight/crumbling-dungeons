@@ -1,7 +1,14 @@
 import random
 import re
 
-DPATTERN = re.compile("^(\\d+)?d(\\d+)([+-]\\d+)?(x(\\d+))$")
+DPATTERN_TEXT = "(\\d+)?d(\\d+)([+-]\\d+)?(x(\\d+))"
+DPATTERN = re.compile(DPATTERN_TEXT)
+
+def int_or(s, backup):
+    if s is None:
+        return backup
+    else:
+        return int(s)
 
 class Seed:
     def __init__(self, n):
@@ -19,10 +26,18 @@ class Seed:
 
     def dparse(self, dstr):
         matches = DPATTERN.fullmatch(dstr)
-        return self.d(int(matches.group(2)), int(matches.group(1)), int(matches.group(3)), int(matches.group(5)))
+        return dagainstmatch(matches)
+
+    def dagainstmatch(self, matches):
+        num = int_or(matches.group(1), 1)
+        mod = int_or(matches.group(3), 0)
+        multiplier = int_or(matches.group(5), 1)
+        return self.d(int(matches.group(2)), num, mod, multiplier)
 
     def d(self, sides, num=1, mod=0, multiplier=1):
         rolled = 0
+        mod = mod
+        multiplier = multiplier
         for _ in range(num):
             rolled += self.randint(1, sides)
         return (rolled + mod) * multiplier
