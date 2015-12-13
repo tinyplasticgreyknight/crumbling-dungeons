@@ -3,6 +3,7 @@
 import table_source
 import random_source
 import dungeon
+import format
 import result_sink
 import sys
 
@@ -11,9 +12,15 @@ def main(tablefile, seedstr):
     randoms = random_source.WrittenSeed(seedstr)
 
     outdir = "%s-%08x" % (tables.module_name, randoms.seed)
-    results = result_sink.Directory(outdir)
+    results = result_sink.Directory(outdir, format.GraphvizFormatter(), format.MarkdownKeyFormatter())
 
-    results.save(dungeon.generate(tables, randoms))
+    room_factory = dungeon.RoomFactory(tables, randoms)
+    connection_factory = dungeon.ConnectionFactory(tables, randoms)
+    generator = dungeon.TreeGen(tables, randoms, room_factory)
+
+    donjon = dungeon.Instance(connection_factory)
+
+    results.save(generator.generate(donjon))
 
     print("saved: %s" % outdir)
 

@@ -1,22 +1,38 @@
-MurderWarrens,,,
-1d20,Danger,Wealth,Features
-1,Sleepy rattlesnake.,1d4 giant hornet stingers (5 gold each).,Thick masses of roots grow down through the room.
-2,Mole scout.,Disturbed soil(as secret door) has 1d4x10 gold of nuggets.,Popular latrine pit.
-3,Dilla scout.,"Jar of cloudy doorspider venom, 15 gold.","Trafficked pit, generate a room  below."
-4,1d4 moles.,"2d4 stolen weapons, worth average 5 gold each.","Walls, ceiling, floor webbed over. Empty egg sacs."
-5,1d4 dillas.,"Jewelry worth 1d4x10 gold (ring, bracelet, necklace, broach)",Crusted access to giant hornet hive.
-6,1 badgerclaw.,"Money pouch with 2d4x10 gold, torn and blood-stained.","Larder, 6’ worms slowly twist on hooks, corpses."
-7,1d6 rattlesnakes.,Worthless box of toys. (1d4x10 copper if refurbished.),Scarred by fire.
-8,"1 giant hornet, scouting.","Tarry deep moss, Algerfost. 1d4 doses, 2d4x10 gold each.","Former nursery, floor & walls hardened waist high."
-9,1 doorsilk spider.,Lump of platinum worth 1d6x10 gold.,"Glowing lichen on the walls and ceiling, twilight."
-10,1d4 badgerclaws.,"Absolutely weird native art, burlap mole harness. 1d4x10 silver.","Pool dug out of the earth, clean clear water in it."
-11,2d4 mole scouts.,Exquisite jeweled weapon worth 2d4x100 gold.,Mass of worms wriggling through corpse pile.
-12,2d4 dilla scouts.,Deep Hog skull with a strange map etched on it.,Crude symbols carved on the wall --- writing?
-13,2d4 badgerclaws.,1d6 prisoners in a root cage (20 gold each.),"Campsite for other invaders; burned torches, etc."
-14,1d4 giant hornets.,"Shortsword +1, shaped like a cutlass.",See the sky through a narrow shaft.
-15,1d4 doorsilk spiders.,"Case, collectable coins. 1d4x10 gold, identified, x10 value.","Deep beds of moss, damp underneath."
-16,2d4 giant hornets.,"Celebrity hostage, worth 100 gold alive (and 10 dead.)",Room supported by columns of petrified roots.
-17,"Floor collapses, generate new room.","Armored corpse. Gear worth 1d4 x10 gold. Purse, 1d4 x10 silver.","Ossuary in progress, fresh bones added daily."
-18,"Pit trap, 1d4 x10 feet deep.",Headsack of Darkvision (worth 400 gold.) 30’ range.,Choke point where invaders must crawl through.
-19,"Collapsing ceiling, 1d4x5 squares.",Stolen treasure chest. Coins worth 2d6 x100 gold.,Wall smoothed and covered in etching like ant farm.
-20,Special!,"Dead hero. Chainmail +1, sword +1 (glows as torch), 2d100 gold.",Mound of skulls in this room stinks of urine.
+MurderWarrens,,,,,,
+1d20,Danger,Wealth,Features,,,
+1,"1 x [rattlesnake], sleepy",[1d4] giant hornet stingers (5 gold each).,Thick masses of roots grow down through the room.,,,
+2,"1 x [mole person], scouting",Disturbed soil(as secret door) has [1d4x10] gold of nuggets.,Popular latrine pit.,,,
+3,"1 x [dilla person], scouting","Jar of cloudy doorspider venom, 15 gold.","Trafficked pit, generate a room  below.",,,
+4,[1d4] x [mole person],"[2d4] stolen weapons, worth average 5 gold each.","Walls, ceiling, floor webbed over. Empty egg sacs.",,,
+5,[1d4] x [dilla person],"Jewelry worth [1d4x10] gold (ring, bracelet, necklace, broach)",Crusted access to giant hornet hive.,,,
+6,1 x [badgerclaw person],"Money pouch with [2d4x10] gold, torn and blood-stained.","Larder, 6’ worms slowly twist on hooks, corpses.",,,
+7,[1d6] x [rattlesnake],Worthless box of toys. ([1d4x10] copper if refurbished.),Scarred by fire.,,,
+8,"1 x [giant hornet], scouting","Tarry deep moss, Algerfost. [1d4] doses, [2d4x10] gold each.","Former nursery, floor & walls hardened waist high.",,,
+9,1 x [doorsilk spider],Lump of platinum worth [1d6x10] gold.,"Glowing lichen on the walls and ceiling, twilight.",,,
+10,[1d4] x [badgerclaw person],"Absolutely weird native art, burlap mole harness. [1d4x10] silver.","Pool dug out of the earth, clean clear water in it.",,,
+11,"[2d4] x [mole person], scouting",Exquisite jeweled weapon worth [2d4x100] gold.,Mass of worms wriggling through corpse pile.,,,
+12,"[2d4] x [dilla person], scouting",Deep Hog skull with a strange map etched on it.,Crude symbols carved on the wall --- writing?,,,
+13,"[2d4] x [badgerclaw person], scouting",[1d6] prisoners in a root cage (20 gold each.),"Campsite for other invaders; burned torches, etc.",,,
+14,[1d4] x [giant hornet],"Shortsword +1, shaped like a cutlass.",See the sky through a narrow shaft.,,,
+15,[1d4] x [doorsilk spider],"Case, collectable coins. [1d4x10] gold, identified, x10 value.","Deep beds of moss, damp underneath.",,,
+16,[2d4] x [giant hornet],"Celebrity hostage, worth 100 gold alive (and 10 dead.)",Room supported by columns of petrified roots.,,,
+17,"Floor collapses, generate new room [#trapexit]","Armored corpse. Gear worth [1d4x10] gold. Purse, [1d4x10] silver.","Ossuary in progress, fresh bones added daily.",,,
+18,"Pit trap, [1d4x10] feet deep",Headsack of Darkvision (worth 400 gold.) 30’ range.,Choke point where invaders must crawl through.,,,
+19,"Collapsing ceiling, [1d4x5] squares",Stolen treasure chest. Coins worth [2d6x100] gold.,Wall smoothed and covered in etching like ant farm.,,,
+20,Special!,"Dead hero. Chainmail +1, sword +1 (glows as torch), [2d100] gold.",Mound of skulls in this room stinks of urine.,,,
+,,,,,,
+Room width,[d6],,,,,
+Room length,[d6],,,,,
+Room exits,[d6-2],,,,,
+Number of danger rolls,[d6-3],,,,,
+Number of wealth rolls,[d6-3],,,,,
+Chance of feature,50.00%,,,,,
+Chance of feature if otherwise empty,100.00%,,,,,
+,,,,,,
+Creature,AC,HD,Dmg,Move,Morale,Notes
+badgerclaw person,1,1,1d8,90' (30'),8,"Burrow 5' a round, 20' a turn"
+dilla person,2,1,1d6,60' (20'),8,"Burrow 5' a round, 20' a turn"
+mole person,1,01/01/15,1d6,60' (20'),7,"Burrow 5' a round, 20' a turn"
+doorsilk spider,1,3*,"2-12, poison",60' (20'),8,Save or die
+giant hornet,1,1*,1d8,90' (30'),8,Can fly
+rattlesnake,1,1*,"1-3, poison",90' (30'),7,Save or die

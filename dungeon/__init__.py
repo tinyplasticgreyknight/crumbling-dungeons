@@ -1,4 +1,4 @@
 from dungeon.treegen import TreeGen
-
-def generate(tables, randoms):
-    return TreeGen(tables, randoms).generate()
+from dungeon.room_factory import RoomFactory
+from dungeon.connection_factory import ConnectionFactory
+from dungeon.instance import Instance
