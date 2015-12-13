@@ -1,5 +1,11 @@
 import csv
+import re
 from table_source.datasource import DataSource
+
+PERCENT_TRIM = re.compile("^(\\d+)(\\.\\d*)?%?$")
+
+def percent(s):
+    return int(PERCENT_TRIM.fullmatch(s).group(1))
 
 class File(DataSource):
     def __init__(self, filename):
@@ -18,22 +24,41 @@ class File(DataSource):
     def interpret(self):
         self.module_name = self.raw[0][0]
         self.load_main_tables()
+        self.load_tunable_values()
         self.load_creatures()
 
     def load_main_tables(self):
-        assert(self.raw[1][0:5] == ["1d20", "Danger", "Wealth", "Features", "Connections"])
+        TABLE_START = 1
+        assert(self.raw[TABLE_START][0:5] == ["1d20", "Danger", "Wealth", "Features", "Connections"])
         for i in range(20):
-            j = i + 2
+            j = i + TABLE_START + 1
             self.danger[i] = self.raw[j][1]
             self.wealth[i] = self.raw[j][2]
             self.features[i] = self.raw[j][3]
             self.connections[i] = self.raw[j][4]
 
+    def load_tunable_values(self):
+        TUNABLE_START = 23
+        TUNABLE_SIZE = 8
+        rows = [self.raw[j] for j in range(TUNABLE_START, TUNABLE_START+TUNABLE_SIZE)]
+        heads = [row[0] for row in rows]
+        assert(heads == ["Room width", "Room length", "Room exits", "Number of danger rolls", "Number of wealth rolls", "Chance of feature", "Chance of feature if otherwise empty", "Chance of crosslink"])
+        values = [row[1] for row in rows]
+        self.room_width = values[0]
+        self.room_height = values[1]
+        self.room_exits = values[2]
+        self.danger_rolls = values[3]
+        self.wealth_rolls = values[4]
+        self.feature_chance = percent(values[5])
+        self.feature_chance_empty = percent(values[6])
+        self.crosslink_chance = percent(values[7])
+
     def load_creatures(self):
-        assert(self.raw[32][0] == "Creature")
-        self.creature_headers = [h for h in self.raw[32][1:] if h != ""]
+        CREATURE_START = 32
+        assert(self.raw[CREATURE_START][0] == "Creature")
+        self.creature_headers = [h for h in self.raw[CREATURE_START][1:] if h != ""]
         value_max = 1 + len(self.creature_headers)
-        for j in range(33, len(self.raw)):
+        for j in range(CREATURE_START+1, len(self.raw)):
             name = self.raw[j][0]
             if name == "":
                 continue
