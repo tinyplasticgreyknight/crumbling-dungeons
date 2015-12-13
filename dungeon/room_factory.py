@@ -9,6 +9,7 @@ class Room:
         self.height = size[1]
         self.danger = []
         self.wealth = []
+        self.features = []
         self.stats = []
 
 class RoomFactory(Factory):
@@ -28,5 +29,10 @@ class RoomFactory(Factory):
         stats = list()
         room.danger = self._collect_list_items(self.tables.get_danger, self.tables.danger_rolls(), stats)
         room.wealth = self._collect_list_items(self.tables.get_wealth, self.tables.wealth_rolls(), stats)
+        feature_chance = self.tables.feature_chance
+        if (len(room.danger) + len(room.wealth)) == 0:
+            feature_chance = self.tables.feature_chance_empty
+        if self.randoms.chance(feature_chance):
+            room.features = self._collect_list_items(self.tables.get_feature, 1, stats)
         room.stats = stats
         return room

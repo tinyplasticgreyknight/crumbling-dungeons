@@ -14,6 +14,7 @@ class MarkdownKeyFormatter(Formatter):
         writer.write("## Room %s (%dx%dft)\n" % (room.n, room.width, room.height))
         self.write_list("Dangers", room.danger, writer)
         self.write_list("Loot", room.wealth, writer)
+        self.write_list("Features", room.features, writer)
         self.write_list("Exits", conns, writer)
         self.write_list("Stat Blocks", room.stats, writer)
 

@@ -26,7 +26,7 @@ Room length,[d6x10],,,,,
 Room exits,[d6-2],,,,,
 Number of danger rolls,[d6-3],,,,,
 Number of wealth rolls,[d6-3],,,,,
-Chance of feature,50.00%,,,,,
+Chance of feature,10.00%,,,,,
 Chance of feature if otherwise empty,100.00%,,,,,
 ,,,,,,
 Creature,AC,HD,Dmg,Move,Morale,Notes
