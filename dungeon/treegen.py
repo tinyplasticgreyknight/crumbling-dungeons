@@ -5,4 +5,4 @@ class TreeGen(Generator):
         Generator.__init__(self, tables, randoms, room_factory)
 
     def generate_layout(self, donjon):
-        pass #todo
+        donjon.extrude_room(0)
